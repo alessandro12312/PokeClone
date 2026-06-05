@@ -39,7 +39,7 @@ PokeClone/
 │           └── right1.png, right2.png
 ```
 
-## Stato Corrente dello Sviluppo: Step 7 (Animazione del Giocatore)
+## Stato Corrente dello Sviluppo: Completato Step 7 (Animazione del Giocatore)
 Fino ad ora sono stati completati con successo i seguenti passaggi:
 1. **Finestra di Gioco (Step 1)**: Creazione della finestra principale `JFrame` con `GamePanel`.
 2. **Game Loop (Step 2)**: Loop preciso a 60 FPS basato su calcolo Delta/Sleep.
@@ -47,11 +47,8 @@ Fino ad ora sono stati completati con successo i seguenti passaggi:
 4. **OOP Structure (Step 4)**: Estrapolazione delle classi base `Entity` (astratta) e `Player` che estende `Entity`.
 5. **Mappa & Sfondo (Step 5)**: Creazione dei tile di gioco in pixel art e caricamento tramite file di testo `map01.txt` gestito da `TileManager`.
 6. **Collisioni (Step 6)**: Rilevamento delle collisioni preciso sui quattro lati della `solidArea` del giocatore rispetto alle tessere con collisione attiva (`wall` e `water`), impedendo il movimento se `collision = true`.
+7. **Animazione del Giocatore (Step 7)**: Caricamento degli sprite PNG ed alternanza delle immagini (`spriteNum` 1 e 2) basata su `spriteCounter` durante il movimento.
 
-### Cosa c'è da fare adesso (Compito per la prossima AI):
-Completare lo **Step 7** in **[Player.java](src/poke_clone/entity/Player.java)** seguendo i `TODO` commentati nel file:
-1. Dichiarare le variabili `BufferedImage` per gli sprite (`up1`, `up2`, `down1`, `down2`, `left1`, `left2`, `right1`, `right2`).
-2. Dichiarare `spriteCounter` e `spriteNum` per l'animazione.
-3. Caricare le immagini PNG da `/res/player/` nel metodo `getPlayerImage()`.
-4. Nel metodo `update()`, alternare `spriteNum` (1 o 2) incrementando `spriteCounter` solo quando il giocatore si sta muovendo.
-5. Nel metodo `draw()`, disegnare l'immagine dello sprite corretto in base alla direzione e al numero di sprite correnti invece del rettangolo bianco di test.
+### Prossimo Passo (Step 8):
+Definire e preparare gli oggetti di gioco (es. SuperObject, AssetSetter, posizionamento chiavi/porte/bauli).
+
