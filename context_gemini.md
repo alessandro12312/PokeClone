@@ -49,6 +49,30 @@ Fino ad ora sono stati completati con successo i seguenti passaggi:
 6. **Collisioni (Step 6)**: Rilevamento delle collisioni preciso sui quattro lati della `solidArea` del giocatore rispetto alle tessere con collisione attiva (`wall` e `water`), impedendo il movimento se `collision = true`.
 7. **Animazione del Giocatore (Step 7)**: Caricamento degli sprite PNG ed alternanza delle immagini (`spriteNum` 1 e 2) basata su `spriteCounter` durante il movimento.
 
-### Prossimo Passo (Step 8):
-Definire e preparare gli oggetti di gioco (es. SuperObject, AssetSetter, posizionamento chiavi/porte/bauli).
+### Cosa c'è da fare adesso (Compito per la prossima AI):
+Completare lo **Step 8 (Oggetti di Gioco e Asset Placement)** seguendo i `TODO` sparsi nei vari file. In questa architettura riutilizziamo la classe astratta `Entity` come superclasse anche per gli oggetti statici:
+
+1. **[Entity.java](src/poke_clone/entity/Entity.java)**:
+   - *Completato*: Aggiunti i campi `image` e `name` (con getter/setter) e il metodo base `draw(Graphics2D, GamePanel)` per consentire il disegno degli oggetti statici.
+
+2. **Subclassi degli Oggetti (tutte estendono `Entity`)**:
+   - **Step 8.3** in **[OBJ_Key.java](src/poke_clone/object/OBJ_Key.java)**: Implementare il costruttore per impostare il nome `"Key"` (usando `setName("Key")` o la variabile protetta) e caricare la texture `/res/objects/key.png` nel campo `image`.
+   - **Step 8.4** in **[OBJ_Door.java](src/poke_clone/object/OBJ_Door.java)**: Implementare il costruttore per impostare il nome `"Door"`, attivare la collisione (`collision = true`) e caricare `/res/objects/door.png`.
+   - **Step 8.5** in **[OBJ_Chest.java](src/poke_clone/object/OBJ_Chest.java)**: Implementare il costruttore per impostare il nome `"Chest"` e caricare `/res/objects/chest.png`.
+
+3. **[AssetSetter.java](src/poke_clone/AssetSetter.java)**:
+   - **Step 8.6**: Implementare il metodo `setObject()` per posizionare le istanze degli oggetti nella mappa (impostando gli indici dell'array `obj` in `GamePanel` con x e y adeguati).
+
+4. **[GamePanel.java](src/poke_clone/GamePanel.java)**:
+   - **Step 8.7**: Dichiarare l'array di oggetti `public Entity obj[] = new Entity[10];` e istanziare `AssetSetter`.
+   - **Step 8.8**: Implementare il metodo `setupGame()` richiamando `aSetter.setObject()`.
+   - **Step 8.9**: Nel metodo `paintComponent()`, scorrere l'array `obj` e disegnare gli oggetti (se non nulli) richiamando `obj[i].draw(g2, this);` prima del giocatore.
+
+5. **[Main.java](src/poke_clone/Main.java)**:
+   - **Step 8.10**: Richiamare `gamepanel.setupGame();` prima di avviare il thread di gioco.
+
+> [!IMPORTANT]
+> Ricordati di creare una cartella `/src/res/objects/` e inserire all'interno le immagini PNG degli oggetti (`key.png`, `door.png`, `chest.png`) per permettere il caricamento corretto dei file senza sollevare eccezioni `NullPointerException` durante `ImageIO.read()`.
+
+
 

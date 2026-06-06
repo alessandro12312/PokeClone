@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import poke_clone.entity.Player;
 import poke_clone.tile.TileManager;
+import poke_clone.entity.Entity;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -28,9 +29,12 @@ public class GamePanel extends JPanel implements Runnable {
 	Player player; 
 	TileManager tileM; 
 	
-	// STEP 6.4: Dichiara e istanzia il CollisionChecker nel GamePanel.
-	// TODO: Dichiara la variabile membro 'public CollisionChecker cChecker = new CollisionChecker(this);'
-	public CollisionChecker cChecker = new CollisionChecker(this) ; 
+	// STEP 8.7: Dichiara l'array per contenere gli oggetti di gioco (riutilizzando la classe Entity) e istanzia l'AssetSetter.
+	// - public Entity obj[] = new Entity[10];
+	// - public AssetSetter aSetter = new AssetSetter(this);
+	// TODO: Dichiara le variabili membro per gli oggetti (come Entity[]) e il setter degli asset.
+	
+	public CollisionChecker cChecker = new CollisionChecker(this); 
 	public GamePanel() {
 		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));		
 		setBackground(Color.BLACK); 
@@ -41,6 +45,9 @@ public class GamePanel extends JPanel implements Runnable {
 		player = new Player(this, keyHandler);
 		tileM = new TileManager(this); 
 	}
+
+	// STEP 8.8: Crea il metodo setupGame per caricare gli oggetti all'avvio.
+	// TODO: Implementa il metodo 'public void setupGame()' che invoca 'aSetter.setObject();'
 
 	public void startGameThread() {
 		gameThread = new Thread(this); 
@@ -82,6 +89,11 @@ public class GamePanel extends JPanel implements Runnable {
 		
 		Graphics2D g2 = (Graphics2D) g; 
 		tileM.draw(g2);
+
+		// STEP 8.9: Disegna gli oggetti dell'array sullo schermo prima del giocatore.
+		// - Cicla l'array 'obj' e se l'elemento corrente non è null, chiama 'draw(g2, this)' dell'oggetto.
+		// TODO: Implementa il disegno degli oggetti.
+
 		player.draw(g2);
 		
 		g2.dispose();
