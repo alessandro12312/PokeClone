@@ -16,10 +16,8 @@ public class Main {
         finestra.pack();
         finestra.setLocationRelativeTo(null);
         finestra.setVisible(true);
-
-        // STEP 8.10: Chiama il metodo per preparare il gioco e gli oggetti prima di avviare il thread di gioco.
-        // TODO: Chiama 'gamepanel.setupGame();' prima di 'gamepanel.startGameThread();'
+        
+        gamepanel.setupGame();
         gamepanel.startGameThread();
     }
-
 }

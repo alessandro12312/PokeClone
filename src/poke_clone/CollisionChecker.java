@@ -4,7 +4,7 @@ import poke_clone.entity.Entity;
 
 /**
  * CollisionChecker si occupa di controllare se un'entità (es. il Player)
- * sta collidendo con una tessera solida della mappa (es. Muro, Acqua).
+ * sta collidendo con una tessera solida della mappa (es. Muro, Acqua) o con un oggetto.
  */
 public class CollisionChecker {
 
@@ -15,13 +15,11 @@ public class CollisionChecker {
 	}
 
 	public void checkTile(Entity entity) {
-		// Calcola i quattro lati dell'area solida dell'entità in pixel nel mondo di gioco.
 		int entityLeftX = entity.getX() + entity.getSolidArea().x; 
 		int entityRightX = entity.getX() + entity.getSolidArea().x + entity.getSolidArea().width; 
 		int entityTopY = entity.getY() + entity.getSolidArea().y; 
 		int entityBottomY = entity.getY() + entity.getSolidArea().y + entity.getSolidArea().height; 
 
-		// Trova a quali colonne e righe corrispondono i lati dell'entità
 		int entityLeftCol = entityLeftX / gp.TILE_SIZE; 
 		int entityRightCol = entityRightX / gp.TILE_SIZE; 
 		int entityTopRow = entityTopY / gp.TILE_SIZE; 
@@ -63,5 +61,48 @@ public class CollisionChecker {
 				}
 				break;
 		}
+	}
+
+	public int checkObject(Entity entity, boolean player) {
+		int index = 999; 
+		for (int i = 0; i < gp.obj.length; i++) {
+			if (gp.obj[i] != null) {
+				entity.solidArea.x = entity.getX() + entity.solidArea.x; 
+				entity.solidArea.y = entity.getY() + entity.solidArea.y; 
+
+				gp.obj[i].solidArea.x = gp.obj[i].getX() + gp.obj[i].solidArea.x; 
+				gp.obj[i].solidArea.y = gp.obj[i].getY() + gp.obj[i].solidArea.y;
+				
+				switch (entity.getDirection()) {
+					case "up":
+						entity.solidArea.y -= entity.getSpeed(); 
+						break;
+					case "down":
+						entity.solidArea.y += entity.getSpeed(); 
+						break;
+					case "left":
+						entity.solidArea.x -= entity.getSpeed(); 
+						break;
+					case "right":
+						entity.solidArea.x += entity.getSpeed(); 
+						break;
+				}
+
+				if (entity.solidArea.intersects(gp.obj[i].solidArea)) {		
+					if (gp.obj[i].isCollision()) {
+						entity.setCollision(true);
+					}
+					if (player) {
+						index = i; 
+					}
+				}
+
+				entity.solidArea.x = entity.getSolidAreaDefaultX();
+				entity.solidArea.y = entity.getSolidAreaDefaultY();
+				gp.obj[i].solidArea.x = gp.obj[i].getSolidAreaDefaultX();
+				gp.obj[i].solidArea.y = gp.obj[i].getSolidAreaDefaultY();
+			}
+		}
+		return index; 
 	}
 }

@@ -1,13 +1,16 @@
 package poke_clone.object;
 
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import poke_clone.entity.Entity;
 
 public class OBJ_Chest extends Entity {
-
-    public static final String NOME = "Cheast";
-
-    // STEP 8.5: Crea il costruttore di OBJ_Chest.
-    // - Imposta 'name = "Chest";'
-    // - Carica l'immagine '/res/objects/chest.png' all'interno di un blocco try-catch usando ImageIO.read(getClass().getResourceAsStream(...)).
-    // TODO: Implementa il costruttore per inizializzare l'oggetto forziere ed estendere Entity.
+    public OBJ_Chest() {
+        name = "Chest";
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream("/res/objects/chest.png")); 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

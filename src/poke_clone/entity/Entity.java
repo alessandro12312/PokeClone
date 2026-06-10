@@ -13,19 +13,43 @@ public abstract class Entity {
 
 	protected int x, y; 
 	protected int speed; 
-	protected String direction = ""; // Inizializzato vuoto per default
-	protected Rectangle solidArea;
+	protected String direction = ""; 
 	protected boolean collision = false; 
-	protected BufferedImage image; // Immagine per oggetti statici
-	protected String name; // Nome dell'entità/oggetto
+	protected BufferedImage image; 
+	protected String name; 
+
+	
+	// STEP 9.1: Inizializza l'area solida di default per tutte le entità (inclusi gli oggetti statici).
+	// Ogni entità deve avere un'area solida predefinita (es. 0, 0, 48, 48) e due variabili per memorizzare
+	// la posizione di default dell'area solida (solidAreaDefaultX e solidAreaDefaultY).
+	// TODO: Dichiara ed inizializza:
+	// - public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+	// - public int solidAreaDefaultX;
+	// - public int solidAreaDefaultY;
+	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+	protected int solidAreaDefaultX = 0;
+	protected int solidAreaDefaultY = 0 ; 
+	public int getSolidAreaDefaultX() {
+		return solidAreaDefaultX;
+	}
+
+	public void setSolidAreaDefaultX(int solidAreaDefaultX) {
+		this.solidAreaDefaultX = solidAreaDefaultX;
+	}
+
+	public int getSolidAreaDefaultY() {
+		return solidAreaDefaultY;
+	}
+
+	public void setSolidAreaDefaultY(int solidAreaDefaultY) {
+		this.solidAreaDefaultY = solidAreaDefaultY;
+	}
 
 	public void draw(Graphics2D g2, GamePanel gp) {
 		if (image != null) {
 			g2.drawImage(image, x, y, gp.TILE_SIZE, gp.TILE_SIZE, null);
 		}
 	}
-
-
 
 	public Rectangle getSolidArea() {
 		return solidArea;

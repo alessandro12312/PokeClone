@@ -29,12 +29,10 @@ public class GamePanel extends JPanel implements Runnable {
 	Player player; 
 	TileManager tileM; 
 	
-	// STEP 8.7: Dichiara l'array per contenere gli oggetti di gioco (riutilizzando la classe Entity) e istanzia l'AssetSetter.
-	// - public Entity obj[] = new Entity[10];
-	// - public AssetSetter aSetter = new AssetSetter(this);
-	// TODO: Dichiara le variabili membro per gli oggetti (come Entity[]) e il setter degli asset.
-	
+	public Entity obj[] = new Entity[10]; 
+	public AssetSetter aSetter = new AssetSetter(this);
 	public CollisionChecker cChecker = new CollisionChecker(this); 
+
 	public GamePanel() {
 		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));		
 		setBackground(Color.BLACK); 
@@ -46,8 +44,9 @@ public class GamePanel extends JPanel implements Runnable {
 		tileM = new TileManager(this); 
 	}
 
-	// STEP 8.8: Crea il metodo setupGame per caricare gli oggetti all'avvio.
-	// TODO: Implementa il metodo 'public void setupGame()' che invoca 'aSetter.setObject();'
+	public void setupGame() {
+		aSetter.setObject();
+	}
 
 	public void startGameThread() {
 		gameThread = new Thread(this); 
@@ -90,9 +89,11 @@ public class GamePanel extends JPanel implements Runnable {
 		Graphics2D g2 = (Graphics2D) g; 
 		tileM.draw(g2);
 
-		// STEP 8.9: Disegna gli oggetti dell'array sullo schermo prima del giocatore.
-		// - Cicla l'array 'obj' e se l'elemento corrente non è null, chiama 'draw(g2, this)' dell'oggetto.
-		// TODO: Implementa il disegno degli oggetti.
+		for (int i = 0; i < obj.length; i++) {
+			if (obj[i] != null) {
+				obj[i].draw(g2, this);
+			}
+		}
 
 		player.draw(g2);
 		
