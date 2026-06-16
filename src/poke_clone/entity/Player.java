@@ -16,7 +16,17 @@ public class Player extends Entity {
 	int spriteCounter = 0;
 	int spriteNum = 1;
 	int hasKey = 0;
-	
+	public int screenX , screenY ; 
+	// STEP 10.3: Aggiungi le coordinate dello schermo (Screen Coordinates) per il giocatore.
+	// Il giocatore rimane sempre al centro dello schermo: la telecamera si muove con lui, non lui
+	// con la telecamera. worldX/worldY (ex x/y, vedi STEP 10.2 in Entity) continuano a muoversi
+	// liberamente su tutta la mappa 50x50; screenX/screenY restano invece fissi.
+	// TODO:
+	// - Dichiara due campi `public int screenX;` e `public int screenY;`.
+	// - In setDefaultValues(), inizializzali al centro dello schermo:
+	//     screenX = gp.SCREEN_WIDTH / 2 - gp.TILE_SIZE / 2;
+	//     screenY = gp.SCREEN_HEIGHT / 2 - gp.TILE_SIZE / 2;
+
 	public Player(GamePanel gp, KeyHandler keyH) {
 		this.gp = gp;
 		this.keyH = keyH;
@@ -31,10 +41,15 @@ public class Player extends Entity {
 	}
 
 	public void setDefaultValues() {
-		x = 100;
-		y = 100;
+		// STEP 10.2 (continua): worldX/worldY sono la posizione di partenza del giocatore
+		// nella mappa 50x50 (in pixel, come prima erano x/y). 100,100 resta una posizione valida
+		// vicino all'angolo in alto a sinistra, dentro le mura di confine.
+		worldX = 100;
+		worldY = 100;
 		speed = 4;
 		direction = "down";
+		screenX = gp.SCREEN_WIDTH / 2 - gp.TILE_SIZE / 2 ; 
+		screenY = gp.SCREEN_HEIGHT/ 2 - gp.TILE_SIZE / 2 ; 
 	}
 
 	public void getPlayerImage() {
@@ -72,12 +87,14 @@ public class Player extends Entity {
 			int objIndex = gp.cChecker.checkObject(this, true);
 			pickUpObject(objIndex);
 
+			// STEP 10.2 (continua): aggiorna questi spostamenti per usare worldX/worldY
+			// (rinominati da x/y, vedi TODO in Entity.java) al posto di x/y.
 			if (isCollision() == false) {
 				switch (direction) {
-					case "up": y -= speed; break;
-					case "down": y += speed; break;
-					case "right": x += speed; break;
-					case "left": x -= speed; break;
+					case "up": worldY -= speed; break;
+					case "down": worldY += speed; break;
+					case "right": worldX += speed; break;
+					case "left": worldX -= speed; break;
 				}
 			}
 
@@ -110,6 +127,7 @@ public class Player extends Entity {
 					}
 					break;
 				case "Chest":
+					
 					System.out.println("Vittoria! Hai aperto il forziere.");
 					gp.gameThread = null; 
 					break;
@@ -141,6 +159,10 @@ public class Player extends Entity {
 			default:
 				image = down1;
 		}
-		g2.drawImage(image, x, y, gp.TILE_SIZE, gp.TILE_SIZE, null);
+		// STEP 10.3 (continua): il player va disegnato sempre nella stessa posizione fissa
+		// dello schermo (screenX, screenY), non in worldX/worldY: è la mappa (e gli oggetti)
+		// a scorrere intorno a lui, non il contrario.
+		// TODO: sostituisci x, y con screenX, screenY.
+		g2.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
 	}
 }

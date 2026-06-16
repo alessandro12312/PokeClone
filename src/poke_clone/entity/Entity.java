@@ -11,8 +11,19 @@ import poke_clone.GamePanel;
  */
 public abstract class Entity {
 
-	protected int x, y; 
-	protected int speed; 
+	// STEP 10.2: Trasforma le coordinate dell'entità in coordinate del Mondo (World Coordinates).
+	// Ora che la mappa è più grande di una schermata, ogni entità deve conoscere la propria posizione
+	// assoluta nell'intera mappa (worldX, worldY), separata dalla posizione in cui viene disegnata
+	// sullo schermo (che dipenderà dalla telecamera).
+	// TODO:
+	// - Rinomina i campi `x` e `y` in `worldX` e `worldY`.
+	// - Rinomina i metodi getX/setX/getY/setY (più sotto in questa classe) in
+	//   getWorldX/setWorldX/getWorldY/setWorldY.
+	// - Aggiorna tutti i riferimenti a questi campi/metodi nelle altre classi
+	//   (Player, CollisionChecker, AssetSetter — vedi i TODO collegati in quei file).
+	
+	protected int worldX, worldY;
+	protected int speed;
 	protected String direction = ""; 
 	protected boolean collision = false; 
 	protected BufferedImage image; 
@@ -45,9 +56,25 @@ public abstract class Entity {
 		this.solidAreaDefaultY = solidAreaDefaultY;
 	}
 
+	// STEP 10.4: Disegna gli oggetti statici (Key, Door, Chest) in base alla telecamera.
+	// La posizione sullo schermo di un oggetto dipende da dove si trova il giocatore nel mondo:
+	//   screenX = worldX (oggetto) - worldX (player) + screenX (player)
+	//   screenY = worldY (oggetto) - worldY (player) + screenY (player)
+	// TODO:
+	// - Calcola screenX e screenY a partire da getWorldX()/getWorldY() di questa entità e da
+	//   gp.player.getWorldX()/getWorldY()/screenX/screenY.
+	// - Disegna l'immagine in (screenX, screenY) invece che in (worldX, worldY).
+	// - (Opzionale) Disegna l'oggetto solo se ricade nell'area visibile dello schermo (con un
+	//   margine di una tessera), per evitare disegni inutili fuori camera.
 	public void draw(Graphics2D g2, GamePanel gp) {
-		if (image != null) {
-			g2.drawImage(image, x, y, gp.TILE_SIZE, gp.TILE_SIZE, null);
+		int screenX =  worldX-gp.player.getWorldX() + gp.player.screenX ; 
+		int screenY = worldY-gp.player.getWorldY() + gp.player.screenY ; 
+		if (image != null &&(worldX + gp.TILE_SIZE > gp.player.getWorldX() - gp.player.screenX
+ 			&& worldX - gp.TILE_SIZE < gp.player.getWorldX() + gp.player.screenX
+ 			&& worldY + gp.TILE_SIZE > gp.player.getWorldY() - gp.player.screenY
+ 			&& worldY - gp.TILE_SIZE < gp.player.getWorldY() + gp.player.screenY)) {
+				
+			g2.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
 		}
 	}
 
@@ -63,17 +90,17 @@ public abstract class Entity {
 	public void setCollision(boolean collision) {
 		this.collision = collision;
 	}
-	public int getX() {
-		return x; 
+	public int getWorldX() {
+		return worldX; 
 	}
-	public void setX(int x) {
-		this.x = x; 
+	public void setWorldX(int x) {
+		this.worldX = x; 
 	}
-	public int getY() {
-		return y; 
+	public int getWorldY() {
+		return worldY; 
 	}
-	public void setY(int y) {
-		this.y = y; 
+	public void setWorldY(int y) {
+		this.worldY = y; 
 	}
 	public int getSpeed() {
 		return speed; 

@@ -14,11 +14,14 @@ public class CollisionChecker {
 		this.gp = gp;
 	}
 
+	// STEP 10.2 (continua): dopo aver rinominato getX/getY in getWorldX/getWorldY in Entity.java,
+	// aggiorna tutte le chiamate in checkTile() e checkObject() di questa classe per usare
+	// getWorldX()/getWorldY() (e, per gli oggetti, getSolidAreaDefaultX/Y restano invariati).
 	public void checkTile(Entity entity) {
-		int entityLeftX = entity.getX() + entity.getSolidArea().x; 
-		int entityRightX = entity.getX() + entity.getSolidArea().x + entity.getSolidArea().width; 
-		int entityTopY = entity.getY() + entity.getSolidArea().y; 
-		int entityBottomY = entity.getY() + entity.getSolidArea().y + entity.getSolidArea().height; 
+		int entityLeftX = entity.getWorldX() + entity.getSolidArea().x;
+		int entityRightX = entity.getWorldX() + entity.getSolidArea().x + entity.getSolidArea().width;
+		int entityTopY = entity.getWorldY() + entity.getSolidArea().y;
+		int entityBottomY = entity.getWorldY() + entity.getSolidArea().y + entity.getSolidArea().height;
 
 		int entityLeftCol = entityLeftX / gp.TILE_SIZE; 
 		int entityRightCol = entityRightX / gp.TILE_SIZE; 
@@ -67,11 +70,11 @@ public class CollisionChecker {
 		int index = 999; 
 		for (int i = 0; i < gp.obj.length; i++) {
 			if (gp.obj[i] != null) {
-				entity.solidArea.x = entity.getX() + entity.solidArea.x; 
-				entity.solidArea.y = entity.getY() + entity.solidArea.y; 
+				entity.solidArea.x = entity.getWorldX() + entity.solidArea.x; 
+				entity.solidArea.y = entity.getWorldY() + entity.solidArea.y; 
 
-				gp.obj[i].solidArea.x = gp.obj[i].getX() + gp.obj[i].solidArea.x; 
-				gp.obj[i].solidArea.y = gp.obj[i].getY() + gp.obj[i].solidArea.y;
+				gp.obj[i].solidArea.x = gp.obj[i].getWorldX() + gp.obj[i].solidArea.x; 
+				gp.obj[i].solidArea.y = gp.obj[i].getWorldY() + gp.obj[i].solidArea.y;
 				
 				switch (entity.getDirection()) {
 					case "up":

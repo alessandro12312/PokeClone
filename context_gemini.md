@@ -41,7 +41,7 @@ PokeClone/
 │           └── chest.png
 ```
 
-## Stato Corrente dello Sviluppo: Step 10 (Progettazione della Telecamera/World Map)
+## Stato Corrente dello Sviluppo: Step 10 (Telecamera di Gioco e World Map) - IN CORSO
 Fino ad ora sono stati completati con successo i seguenti passaggi:
 1. **Finestra di Gioco (Step 1)**: Creazione della finestra principale `JFrame` con `GamePanel`.
 2. **Game Loop (Step 2)**: Loop preciso a 60 FPS basato su calcolo Delta/Sleep.
@@ -53,9 +53,25 @@ Fino ad ora sono stati completati con successo i seguenti passaggi:
 8. **Oggetti Statici (Step 8)**: Creazione degli oggetti `OBJ_Key`, `OBJ_Door`, `OBJ_Chest` e posizionamento tramite `AssetSetter`.
 9. **Interazione Oggetti (Step 9)**: Metodo `checkObject()` implementato in `CollisionChecker` e logica di raccolta chiave/apertura porta/vittoria implementata in `Player.java`.
 
-### Cosa c'è da fare adesso (Compito per la prossima AI):
-Iniziare lo **Step 10: La Telecamera di Gioco e la World Map (Mappa Globale)**:
-- Espandere la mappa da una singola schermata a una mappa globale (es. 50x50 tessere).
-- Introdurre il concetto di World Coordinates (`worldX`, `worldY` per ogni entità/tessera) e Screen Coordinates (`screenX`, `screenY` per il disegno a schermo).
-- Centrare la telecamera sul giocatore mantenendo `player.screenX` e `player.screenY` fissi al centro dello schermo.
-- Modificare `TileManager.java` e `CollisionChecker.java` per supportare il disegno ed il controllo collisioni scalati sulle coordinate del mondo.
+### Step 10 - Checklist (TODO già inseriti nel codice come commenti):
+- [x] **10.6** `src/res/maps/map01.txt`: mappa espansa a 50x50 tessere (bordo di muri, prato
+      all'interno, laghetto d'acqua nella stessa posizione relativa di prima).
+- [ ] **10.1** `GamePanel.java`: aggiungere `MAX_WORLD_COL`/`MAX_WORLD_ROW`/`WORLD_WIDTH`/`WORLD_HEIGHT`
+      e rendere pubblico il campo `player`.
+- [ ] **10.2** `Entity.java` + dipendenti (`Player`, `CollisionChecker`, `AssetSetter`): rinominare
+      `x`/`y` in `worldX`/`worldY` e `getX`/`setX`/`getY`/`setY` in
+      `getWorldX`/`setWorldX`/`getWorldY`/`setWorldY`, aggiornando tutti i riferimenti.
+- [ ] **10.3** `Player.java`: aggiungere `screenX`/`screenY` fissati al centro schermo
+      (inizializzati in `setDefaultValues()`); `update()` muove `worldX`/`worldY`, `draw()`
+      disegna a `screenX`/`screenY`.
+- [ ] **10.4** `Entity.java` (`draw()`): disegnare gli oggetti statici (Key, Door, Chest) calcolando
+      `screenX`/`screenY` relativi alla telecamera a partire da `worldX`/`worldY` e dalla posizione
+      di `gp.player`.
+- [ ] **10.5** `TileManager.java`: ridimensionare `mapTileNum` a `[MAX_WORLD_COL][MAX_WORLD_ROW]`,
+      aggiornare `loadMap()` per leggere 50x50 valori, e `draw()` per disegnare la mappa centrata
+      sul giocatore con culling delle tessere fuori schermo.
+
+Ogni punto ha un commento `// STEP 10.x: ...` con istruzioni dettagliate nel file corrispondente.
+Aggiorna questa checklist (e la riga "Stato Corrente") man mano che i punti vengono completati;
+quando tutti sono fatti, segna lo Step 10 come completato e descrivi qui la nuova architettura
+world/camera, poi proponi lo Step 11.
