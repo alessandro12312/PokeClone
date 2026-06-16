@@ -18,10 +18,6 @@ public class TileManager {
 	public Tile[] tile;
 	public int[][] mapTileNum;
 
-	// STEP 10.5: Adatta TileManager alla World Map (50x50) e disegna in base alla telecamera.
-	// TODO: ridimensiona mapTileNum a [gp.MAX_WORLD_COL][gp.MAX_WORLD_ROW] (vedi STEP 10.1 in
-	// GamePanel.java per le nuove costanti).
-
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
 
@@ -49,9 +45,6 @@ public class TileManager {
 		}
 	}
 
-	// STEP 10.5 (continua): map01.txt è già stato espanso a 50 righe x 50 colonne.
-	// TODO: aggiorna i due cicli per leggere gp.MAX_WORLD_ROW righe da gp.MAX_WORLD_COL numeri
-	// (al posto di MAX_SCREEN_ROW/MAX_SCREEN_COL).
 	public void loadMap() {
 		try {
 			InputStream is = getClass().getResourceAsStream("/res/maps/map01.txt");
@@ -73,22 +66,6 @@ public class TileManager {
 		}
 	}
 
-	// STEP 10.5 (continua): disegna la mappa 50x50 centrata sul giocatore (telecamera).
-	// TODO:
-	// - Itera su gp.MAX_WORLD_ROW x gp.MAX_WORLD_COL (l'intera mappa), non più solo
-	//   MAX_SCREEN_ROW/MAX_SCREEN_COL.
-	// - Per ogni tessera calcola la posizione nel mondo (come ora): worldX = col * TILE_SIZE,
-	//   worldY = row * TILE_SIZE.
-	// - Calcola la posizione sullo schermo in base alla telecamera:
-	//     screenX = worldX - gp.player.getWorldX() + gp.player.screenX;
-	//     screenY = worldY - gp.player.getWorldY() + gp.player.screenY;
-	// - Disegna la tessera in (screenX, screenY) solo se è (almeno parzialmente) visibile,
-	//   per non sprecare risorse disegnando l'intera mappa ogni frame. Esempio di condizione
-	//   di visibilità (con un margine di una tessera in ogni direzione):
-	//     worldX + TILE_SIZE > gp.player.getWorldX() - gp.player.screenX &&
-	//     worldX - TILE_SIZE < gp.player.getWorldX() + gp.player.screenX &&
-	//     worldY + TILE_SIZE > gp.player.getWorldY() - gp.player.screenY &&
-	//     worldY - TILE_SIZE < gp.player.getWorldY() + gp.player.screenY
 	public void draw(Graphics2D g2) {
 		for (int row = 0; row < gp.MAX_WORLD_ROW; row++) {
 			for (int col = 0; col < gp.MAX_WORLD_COL; col++) {

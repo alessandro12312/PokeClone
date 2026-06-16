@@ -14,9 +14,6 @@ public class CollisionChecker {
 		this.gp = gp;
 	}
 
-	// STEP 10.2 (continua): dopo aver rinominato getX/getY in getWorldX/getWorldY in Entity.java,
-	// aggiorna tutte le chiamate in checkTile() e checkObject() di questa classe per usare
-	// getWorldX()/getWorldY() (e, per gli oggetti, getSolidAreaDefaultX/Y restano invariati).
 	public void checkTile(Entity entity) {
 		int entityLeftX = entity.getWorldX() + entity.getSolidArea().x;
 		int entityRightX = entity.getWorldX() + entity.getSolidArea().x + entity.getSolidArea().width;

@@ -11,17 +11,6 @@ import poke_clone.GamePanel;
  */
 public abstract class Entity {
 
-	// STEP 10.2: Trasforma le coordinate dell'entità in coordinate del Mondo (World Coordinates).
-	// Ora che la mappa è più grande di una schermata, ogni entità deve conoscere la propria posizione
-	// assoluta nell'intera mappa (worldX, worldY), separata dalla posizione in cui viene disegnata
-	// sullo schermo (che dipenderà dalla telecamera).
-	// TODO:
-	// - Rinomina i campi `x` e `y` in `worldX` e `worldY`.
-	// - Rinomina i metodi getX/setX/getY/setY (più sotto in questa classe) in
-	//   getWorldX/setWorldX/getWorldY/setWorldY.
-	// - Aggiorna tutti i riferimenti a questi campi/metodi nelle altre classi
-	//   (Player, CollisionChecker, AssetSetter — vedi i TODO collegati in quei file).
-	
 	protected int worldX, worldY;
 	protected int speed;
 	protected String direction = ""; 
@@ -30,13 +19,6 @@ public abstract class Entity {
 	protected String name; 
 
 	
-	// STEP 9.1: Inizializza l'area solida di default per tutte le entità (inclusi gli oggetti statici).
-	// Ogni entità deve avere un'area solida predefinita (es. 0, 0, 48, 48) e due variabili per memorizzare
-	// la posizione di default dell'area solida (solidAreaDefaultX e solidAreaDefaultY).
-	// TODO: Dichiara ed inizializza:
-	// - public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
-	// - public int solidAreaDefaultX;
-	// - public int solidAreaDefaultY;
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 	protected int solidAreaDefaultX = 0;
 	protected int solidAreaDefaultY = 0 ; 
@@ -56,16 +38,6 @@ public abstract class Entity {
 		this.solidAreaDefaultY = solidAreaDefaultY;
 	}
 
-	// STEP 10.4: Disegna gli oggetti statici (Key, Door, Chest) in base alla telecamera.
-	// La posizione sullo schermo di un oggetto dipende da dove si trova il giocatore nel mondo:
-	//   screenX = worldX (oggetto) - worldX (player) + screenX (player)
-	//   screenY = worldY (oggetto) - worldY (player) + screenY (player)
-	// TODO:
-	// - Calcola screenX e screenY a partire da getWorldX()/getWorldY() di questa entità e da
-	//   gp.player.getWorldX()/getWorldY()/screenX/screenY.
-	// - Disegna l'immagine in (screenX, screenY) invece che in (worldX, worldY).
-	// - (Opzionale) Disegna l'oggetto solo se ricade nell'area visibile dello schermo (con un
-	//   margine di una tessera), per evitare disegni inutili fuori camera.
 	public void draw(Graphics2D g2, GamePanel gp) {
 		int screenX =  worldX-gp.player.getWorldX() + gp.player.screenX ; 
 		int screenY = worldY-gp.player.getWorldY() + gp.player.screenY ; 

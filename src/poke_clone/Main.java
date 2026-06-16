@@ -12,7 +12,6 @@ public class Main {
 
         GamePanel gamepanel = new GamePanel();
         finestra.add(gamepanel);
-
         finestra.pack();
         finestra.setLocationRelativeTo(null);
         finestra.setVisible(true);

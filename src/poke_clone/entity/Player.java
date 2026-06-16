@@ -15,17 +15,8 @@ public class Player extends Entity {
 	BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
 	int spriteCounter = 0;
 	int spriteNum = 1;
-	int hasKey = 0;
-	public int screenX , screenY ; 
-	// STEP 10.3: Aggiungi le coordinate dello schermo (Screen Coordinates) per il giocatore.
-	// Il giocatore rimane sempre al centro dello schermo: la telecamera si muove con lui, non lui
-	// con la telecamera. worldX/worldY (ex x/y, vedi STEP 10.2 in Entity) continuano a muoversi
-	// liberamente su tutta la mappa 50x50; screenX/screenY restano invece fissi.
-	// TODO:
-	// - Dichiara due campi `public int screenX;` e `public int screenY;`.
-	// - In setDefaultValues(), inizializzali al centro dello schermo:
-	//     screenX = gp.SCREEN_WIDTH / 2 - gp.TILE_SIZE / 2;
-	//     screenY = gp.SCREEN_HEIGHT / 2 - gp.TILE_SIZE / 2;
+	public int hasKey = 0;
+	public int screenX, screenY;
 
 	public Player(GamePanel gp, KeyHandler keyH) {
 		this.gp = gp;
@@ -41,9 +32,6 @@ public class Player extends Entity {
 	}
 
 	public void setDefaultValues() {
-		// STEP 10.2 (continua): worldX/worldY sono la posizione di partenza del giocatore
-		// nella mappa 50x50 (in pixel, come prima erano x/y). 100,100 resta una posizione valida
-		// vicino all'angolo in alto a sinistra, dentro le mura di confine.
 		worldX = 100;
 		worldY = 100;
 		speed = 4;
@@ -87,8 +75,6 @@ public class Player extends Entity {
 			int objIndex = gp.cChecker.checkObject(this, true);
 			pickUpObject(objIndex);
 
-			// STEP 10.2 (continua): aggiorna questi spostamenti per usare worldX/worldY
-			// (rinominati da x/y, vedi TODO in Entity.java) al posto di x/y.
 			if (isCollision() == false) {
 				switch (direction) {
 					case "up": worldY -= speed; break;
@@ -116,20 +102,19 @@ public class Player extends Entity {
 			switch (objName) {
 				case "Key":
 					hasKey++;
-					gp.obj[i] = null; 
-					System.out.println("Chiave raccolta! Chiavi: " + hasKey);
+					gp.obj[i] = null;
+					gp.ui.showMessage("hai preso la chiave");
 					break;
 				case "Door":
 					if (hasKey > 0) {
-						hasKey--; 
-						System.out.println("Chiave utilizzata. Chiavi rimaste: " + hasKey);
-						gp.obj[i] = null; 
+						hasKey--;
+						gp.obj[i] = null;
+						gp.ui.showMessage("Hai aperto la porta");
 					}
 					break;
 				case "Chest":
-					
-					System.out.println("Vittoria! Hai aperto il forziere.");
-					gp.gameThread = null; 
+					gp.ui.showMessage("Hai vinto");
+					gp.gameThread = null;
 					break;
 				default:
 					break;
@@ -159,10 +144,6 @@ public class Player extends Entity {
 			default:
 				image = down1;
 		}
-		// STEP 10.3 (continua): il player va disegnato sempre nella stessa posizione fissa
-		// dello schermo (screenX, screenY), non in worldX/worldY: è la mappa (e gli oggetti)
-		// a scorrere intorno a lui, non il contrario.
-		// TODO: sostituisci x, y con screenX, screenY.
 		g2.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
 	}
 }

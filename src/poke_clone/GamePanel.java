@@ -25,41 +25,30 @@ public class GamePanel extends JPanel implements Runnable {
 	public static final int MAX_WORLD_ROW = 50;
 	public static final int WORLD_WIDTH = TILE_SIZE * MAX_WORLD_COL ;
 	public static final int WORLD_HEIGHT = TILE_SIZE * MAX_WORLD_ROW ;
-	// STEP 10.1: Definisci le dimensioni della World Map.
-	// La mappa di gioco non sarà più limitata a una singola schermata (16x12 tessere), ma diventerà
-	// una mappa globale molto più grande (50x50, vedi src/res/maps/map01.txt). La "telecamera"
-	// mostrerà solo la porzione di mappa attorno al giocatore.
-	// TODO: Dichiara ed inizializza:
-	// - public static final int MAX_WORLD_COL = 50;
-	// - public static final int MAX_WORLD_ROW = 50;
-	// - public static final int WORLD_WIDTH = TILE_SIZE * MAX_WORLD_COL;
-	// - public static final int WORLD_HEIGHT = TILE_SIZE * MAX_WORLD_ROW;
 
 	public Thread gameThread;
 	private static final int FPS = 60;
 
 	KeyHandler keyHandler = new KeyHandler();
 
-	// STEP 10.1 (continua): Rendi il campo "player" pubblico.
-	// TileManager (package poke_clone.tile) e le classi in poke_clone.entity (Entity, per disegnare
-	// gli oggetti statici in base alla telecamera) devono poter leggere la posizione e le coordinate
-	// schermo del giocatore (gp.player.getWorldX(), gp.player.screenX, ecc.).
-	// TODO: cambia la dichiarazione in "public Player player;"
 	public Player player;
 	TileManager tileM;
-	
-	public Entity obj[] = new Entity[10]; 
+
+	public Entity obj[] = new Entity[10];
 	public AssetSetter aSetter = new AssetSetter(this);
-	public CollisionChecker cChecker = new CollisionChecker(this); 
+	public CollisionChecker cChecker = new CollisionChecker(this);
+
+	public UI ui;
 
 	public GamePanel() {
-		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));		
-		setBackground(Color.BLACK); 
+		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+		setBackground(Color.BLACK);
 		setDoubleBuffered(true);
 		addKeyListener(keyHandler);
-		setFocusable(true); 
+		setFocusable(true);
 		player = new Player(this, keyHandler);
-		tileM = new TileManager(this); 
+		tileM = new TileManager(this);
+		ui = new UI(this) ;
 	}
 
 	public void setupGame() {
@@ -114,7 +103,8 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 
 		player.draw(g2);
-		
+		ui.draw(g2);
 		g2.dispose();
+
 	}
 }
