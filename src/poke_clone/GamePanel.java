@@ -35,6 +35,11 @@ public class GamePanel extends JPanel implements Runnable {
 	TileManager tileM;
 
 	public Entity obj[] = new Entity[10];
+	public int gameState ; 
+	public static final int PLAY_STATE = 1 ; 
+	public static final int DIALOGUE_STATE=2;
+	public Entity npc[] = new Entity[10] ;
+
 	public AssetSetter aSetter = new AssetSetter(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
 
@@ -53,6 +58,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void setupGame() {
 		aSetter.setObject();
+		aSetter.setNPC() ;
+		gameState = PLAY_STATE ;
 	}
 
 	public void startGameThread() {
@@ -86,7 +93,14 @@ public class GamePanel extends JPanel implements Runnable {
 	}                                  
 
 	public void update() {
-		player.update();
+		if (gameState==PLAY_STATE) {
+			player.update();
+		} else if (gameState==DIALOGUE_STATE) {
+			if (keyHandler.enterPressed) {
+				gameState = PLAY_STATE;
+				keyHandler.enterPressed = false;
+			}
+		}
 	}
 
 	@Override
@@ -100,6 +114,12 @@ public class GamePanel extends JPanel implements Runnable {
 			if (obj[i] != null) {
 				obj[i].draw(g2, this);
 			}
+		}
+
+		for(int i = 0 ; i<npc.length ; i++){
+			if(npc[i] != null){
+				npc[i].draw(g2,this);
+			} 
 		}
 
 		player.draw(g2);

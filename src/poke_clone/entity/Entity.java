@@ -38,6 +38,16 @@ public abstract class Entity {
 		this.solidAreaDefaultY = solidAreaDefaultY;
 	}
 
+	// STEP 10.4: Disegna gli oggetti statici (Key, Door, Chest) in base alla telecamera.
+	// La posizione sullo schermo di un oggetto dipende da dove si trova il giocatore nel mondo:
+	//   screenX = worldX (oggetto) - worldX (player) + screenX (player)
+	//   screenY = worldY (oggetto) - worldY (player) + screenY (player)
+	// TODO:
+	// - Calcola screenX e screenY a partire da getWorldX()/getWorldY() di questa entità e da
+	//   gp.player.getWorldX()/getWorldY()/screenX/screenY.
+	// - Disegna l'immagine in (screenX, screenY) invece che in (worldX, worldY).
+	// - (Opzionale) Disegna l'oggetto solo se ricade nell'area visibile dello schermo (con un
+	//   margine di una tessera), per evitare disegni inutili fuori camera.
 	public void draw(Graphics2D g2, GamePanel gp) {
 		int screenX =  worldX-gp.player.getWorldX() + gp.player.screenX ; 
 		int screenY = worldY-gp.player.getWorldY() + gp.player.screenY ; 

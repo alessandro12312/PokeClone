@@ -1,5 +1,6 @@
 package poke_clone;
 
+import poke_clone.entity.NPC_OldMan;
 import poke_clone.object.OBJ_Chest;
 import poke_clone.object.OBJ_Door;
 import poke_clone.object.OBJ_Key;
@@ -11,11 +12,12 @@ public class AssetSetter {
     public AssetSetter(GamePanel gp) {
         this.gp = gp;
     }
+    public void setNPC(){
+        gp.npc[0] = new NPC_OldMan(gp) ; 
+        gp.npc[0].setWorldX(5*gp.TILE_SIZE);
+        gp.npc[0].setWorldY(9*gp.TILE_SIZE);
+    }
 
-    // STEP 10.2 (continua): dopo aver rinominato setX/setY in setWorldX/setWorldY in Entity.java,
-    // aggiorna le chiamate qui sotto. Le coordinate restano espresse in pixel (colonna/riga *
-    // TILE_SIZE): con la mappa ora a 50x50 tessere puoi anche spostare questi oggetti più lontano
-    // dallo spawn del giocatore per avere più spazio da esplorare.
     public void setObject() {
         gp.obj[0] = new OBJ_Key();
         gp.obj[0].setWorldX(4 * gp.TILE_SIZE);

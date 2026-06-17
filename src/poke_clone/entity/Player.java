@@ -74,6 +74,8 @@ public class Player extends Entity {
 
 			int objIndex = gp.cChecker.checkObject(this, true);
 			pickUpObject(objIndex);
+			int npcIndex = gp.cChecker.checkEntity(this,gp.npc) ;
+			interactNPC(npcIndex) ;
 
 			if (isCollision() == false) {
 				switch (direction) {
@@ -94,6 +96,16 @@ public class Player extends Entity {
 				spriteCounter = 0;
 			}
 		}
+	}
+
+	public void interactNPC(int i) {
+	    if (i != 999) {
+	        if (keyH.enterPressed) {
+	            gp.gameState = gp.DIALOGUE_STATE;
+	            gp.ui.startDialogue((NPC_OldMan) gp.npc[i]);
+	        }
+	    }
+	    keyH.enterPressed = false;  // consuma sempre il tasto per evitare ripetizioni
 	}
 
 	public void pickUpObject(int i) {

@@ -63,6 +63,30 @@ public class CollisionChecker {
 		}
 	}
 
+	public int checkEntity(Entity entity, Entity[] target) {
+	    int index = 999;
+	    for (int i = 0; i < target.length; i++) {
+	        if (target[i] != null) {
+	            entity.solidArea.x = entity.getWorldX() + entity.solidArea.x;
+	            entity.solidArea.y = entity.getWorldY() + entity.solidArea.y;
+	            target[i].solidArea.x = target[i].getWorldX() + target[i].solidArea.x;
+	            target[i].solidArea.y = target[i].getWorldY() + target[i].solidArea.y;
+	            switch (entity.getDirection()) {
+	                case "up":    entity.solidArea.y -= entity.getSpeed(); break;
+	                case "down":  entity.solidArea.y += entity.getSpeed(); break;
+	                case "left":  entity.solidArea.x -= entity.getSpeed(); break;
+	                case "right": entity.solidArea.x += entity.getSpeed(); break;
+	            }
+	            if (entity.solidArea.intersects(target[i].solidArea)) { index = i; }
+	            entity.solidArea.x = entity.getSolidAreaDefaultX();
+	            entity.solidArea.y = entity.getSolidAreaDefaultY();
+	            target[i].solidArea.x = target[i].getSolidAreaDefaultX();
+	            target[i].solidArea.y = target[i].getSolidAreaDefaultY();
+	        }
+	    }
+	    return index;
+	}
+
 	public int checkObject(Entity entity, boolean player) {
 		int index = 999; 
 		for (int i = 0; i < gp.obj.length; i++) {
@@ -75,17 +99,13 @@ public class CollisionChecker {
 				
 				switch (entity.getDirection()) {
 					case "up":
-						entity.solidArea.y -= entity.getSpeed(); 
-						break;
+						entity.solidArea.y -= entity.getSpeed(); break;
 					case "down":
-						entity.solidArea.y += entity.getSpeed(); 
-						break;
+						entity.solidArea.y += entity.getSpeed(); break;
 					case "left":
-						entity.solidArea.x -= entity.getSpeed(); 
-						break;
+						entity.solidArea.x -= entity.getSpeed(); break;
 					case "right":
-						entity.solidArea.x += entity.getSpeed(); 
-						break;
+						entity.solidArea.x += entity.getSpeed(); break;
 				}
 
 				if (entity.solidArea.intersects(gp.obj[i].solidArea)) {		
