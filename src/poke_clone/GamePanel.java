@@ -35,10 +35,12 @@ public class GamePanel extends JPanel implements Runnable {
 	TileManager tileM;
 
 	public Entity obj[] = new Entity[10];
-	public int gameState ; 
-	public static final int PLAY_STATE = 1 ; 
+	public int gameState ;
+	public static final int PLAY_STATE = 1 ;
 	public static final int DIALOGUE_STATE=2;
 	public Entity npc[] = new Entity[10] ;
+	public static final int TITLE_STATE =0 ;
+	public static final int PAUSE_STATE=3 ;
 
 	public AssetSetter aSetter = new AssetSetter(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
@@ -59,7 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public void setupGame() {
 		aSetter.setObject();
 		aSetter.setNPC() ;
-		gameState = PLAY_STATE ;
+		gameState = TITLE_STATE ;
 	}
 
 	public void startGameThread() {
@@ -93,21 +95,49 @@ public class GamePanel extends JPanel implements Runnable {
 	}                                  
 
 	public void update() {
-		if (gameState==PLAY_STATE) {
-			player.update();
-		} else if (gameState==DIALOGUE_STATE) {
-			if (keyHandler.enterPressed) {
-				gameState = PLAY_STATE;
-				keyHandler.enterPressed = false;
+		if(gameState == TITLE_STATE){
+			if(keyHandler.enterPressed){
+			gameState = PLAY_STATE; 
+			keyHandler.enterPressed=false ;
 			}
 		}
-	}
+		else if (gameState==PLAY_STATE) {
+			if (keyHandler.pausaPressed) {
+				gameState=PAUSE_STATE; 
+				keyHandler.pausaPressed = false;
+				return;
+			}
+				player.update();
+				for(int i = 0 ; i < npc.length ; i++){
+					if (npc[i]!=null) {
+						npc[i].update();
+					}
+				}
+		} else if (gameState==DIALOGUE_STATE) {
+				if (keyHandler.enterPressed) {
+					gameState = PLAY_STATE;
+					keyHandler.enterPressed = false;
+				}
+		}else if (gameState == PAUSE_STATE) {
+				if (keyHandler.pausaPressed) {
+					gameState= PLAY_STATE; 
+					keyHandler.pausaPressed = false ; 
+				}
+			}
+		}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
-		Graphics2D g2 = (Graphics2D) g; 
+
+		Graphics2D g2 = (Graphics2D) g;
+
+		if (gameState == TITLE_STATE) {
+		    ui.drawTitleScreen(g2);
+		    g2.dispose();
+		    return;   // non disegnare tessere/oggetti/npc/player mentre siamo nel menu iniziale
+		}
+
 		tileM.draw(g2);
 
 		for (int i = 0; i < obj.length; i++) {
